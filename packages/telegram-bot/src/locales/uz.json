@@ -1,0 +1,22 @@
+{
+  "start": "Assalomu alaykum! 🏠 AI House Planner botiga xush kelibsiz!\n\nMen sizga orzuingizdagi uy rejasini yaratib beraman.\n\n/generate - Yangi uy rejasi yaratish\n/history - Oldingi loyihalar\n/help - Yordam",
+  "help": "📋 BOT BUYRUQLARI:\n\n/start - Boshlanish\n/generate - Yangi uy rejasi yaratish\n/history - Oldingi loyihalar\n/help - Yordam\n\n💡 Maslahat: Imkon qadar ko'proq ma'lumot bering, AI yaxshiroq natija beradi!",
+  "ask_area": "📐 Uyning umumiy maydoni qancha? (m² da)\n\nMisol: 120",
+  "ask_floors": "🏗 Necha qavatli uy xohlaysiz?\n\nMisol: 1 yoki 2",
+  "ask_bedrooms": "🛏 Nechta yotoq xona kerak?\n\nMisol: 3",
+  "ask_style": "🎨 Uy uslubini tanlang:",
+  "ask_extra": "✏️ Qo'shimcha talablar bormi? (ixtiyoriy)\n\nMisol: 'katta oshxona', 'garaj', 'hovuz'\n\nYoki /skip yozing",
+  "generating": "⏳ AI uy rejangizdni yaratmoqda...\n\nBir oz kuting, bu 15-30 soniya olishi mumkin.",
+  "plan_ready": "✅ Uy rejangiz tayyor!",
+  "image_generating": "🎨 Uy rasmi yaratilmoqda...",
+  "error": "❌ Xatolik yuz berdi. Qayta urinib ko'ring.",
+  "invalid_number": "❗ Iltimos, to'g'ri son kiriting.",
+  "invalid_area": "❗ Maydon 20 dan 2000 gacha bo'lishi kerak.",
+  "invalid_floors": "❗ Qavat 1 dan 5 gacha bo'lishi kerak.",
+  "invalid_bedrooms": "❗ Yotoq xona soni 1 dan 10 gacha bo'lishi kerak.",
+  "no_history": "📭 Hali saqlangan loyiha yo'q.\n\n/generate buyrug'i bilan yangi loyiha yarating!",
+  "retry": "🔄 Qayta yaratish",
+  "new_plan": "✨ Yangi reja",
+  "save_plan": "💾 Saqlash",
+  "skipped": "O'tkazib yuborildi"
+}

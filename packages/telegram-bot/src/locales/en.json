@@ -1,0 +1,22 @@
+{
+  "start": "Welcome to AI House Planner! 🏠\n\nI will create your dream house plan using AI.\n\n/generate - Create new house plan\n/history - Previous projects\n/help - Help",
+  "help": "📋 BOT COMMANDS:\n\n/start - Start\n/generate - Create new house plan\n/history - Previous projects\n/help - Help\n\n💡 Tip: The more details you provide, the better the AI result!",
+  "ask_area": "📐 What is the total area of the house? (in m²)\n\nExample: 120",
+  "ask_floors": "🏗 How many floors do you want?\n\nExample: 1 or 2",
+  "ask_bedrooms": "🛏 How many bedrooms do you need?\n\nExample: 3",
+  "ask_style": "🎨 Choose the house style:",
+  "ask_extra": "✏️ Any additional requirements? (optional)\n\nExample: 'large kitchen', 'garage', 'pool'\n\nOr type /skip",
+  "generating": "⏳ AI is generating your house plan...\n\nPlease wait, this may take 15-30 seconds.",
+  "plan_ready": "✅ Your house plan is ready!",
+  "image_generating": "🎨 Generating house image...",
+  "error": "❌ An error occurred. Please try again.",
+  "invalid_number": "❗ Please enter a valid number.",
+  "invalid_area": "❗ Area must be between 20 and 2000.",
+  "invalid_floors": "❗ Floors must be between 1 and 5.",
+  "invalid_bedrooms": "❗ Bedrooms must be between 1 and 10.",
+  "no_history": "📭 No saved projects yet.\n\nUse /generate to create a new project!",
+  "retry": "🔄 Regenerate",
+  "new_plan": "✨ New Plan",
+  "save_plan": "💾 Save",
+  "skipped": "Skipped"
+}

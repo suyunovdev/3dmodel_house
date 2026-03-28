@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: ai-planner-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: ai-house-planner
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7-alpine
+    container_name: ai-planner-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ./packages/backend
+      dockerfile: Dockerfile
+    container_name: ai-planner-backend
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/ai-house-planner?authSource=admin
+      REDIS_URL: redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./packages/backend/src:/app/src
+
+  telegram-bot:
+    build:
+      context: ./packages/telegram-bot
+      dockerfile: Dockerfile
+    container_name: ai-planner-bot
+    restart: unless-stopped
+    environment:
+      BACKEND_URL: http://backend:3001
+    env_file:
+      - .env
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+  redis_data:

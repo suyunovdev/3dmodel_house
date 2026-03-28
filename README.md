@@ -1,16 +1,55 @@
-# React + Vite
+# AI House Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI orqali uy rejasi (2D plan), tavsif va dizayn yaratuvchi platforma.
 
-Currently, two official plugins are available:
+## Texnologiyalar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Backend**: Node.js + Express + TypeScript
+- **AI**: OpenAI GPT-4o + DALL·E 3
+- **Bot**: Telegraf v4
+- **Frontend**: Next.js 14 + Tailwind CSS + Zustand
+- **Database**: MongoDB + Mongoose
+- **Monorepo**: Turborepo + pnpm
 
-## React Compiler
+## O'rnatish
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Dependencies
+pnpm install
 
-## Expanding the ESLint configuration
+# Environment
+cp .env.example .env
+# .env faylini to'ldiring
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Development
+pnpm dev
+
+# Build
+pnpm build
+```
+
+## Struktura
+
+```
+packages/
+├── shared/        # Umumiy typlar
+├── backend/       # API server
+├── telegram-bot/  # Telegram bot
+└── frontend/      # Web app
+```
+
+## API Endpointlar
+
+| Method | Endpoint | Tavsif |
+|--------|----------|--------|
+| POST | /api/generate-plan | Uy rejasi generatsiya |
+| POST | /api/generate-image | Rasm generatsiya |
+| GET | /api/projects | Loyihalar ro'yxati |
+| POST | /api/projects | Yangi loyiha saqlash |
+| GET | /api/health | Server holati |
+
+## Deploy
+
+- **Frontend**: Vercel
+- **Backend**: Render / VPS
+- **Database**: MongoDB Atlas

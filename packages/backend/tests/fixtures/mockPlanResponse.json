@@ -1,0 +1,78 @@
+{
+  "floors": [
+    {
+      "floor": 1,
+      "width": 12,
+      "height": 10,
+      "rooms": [
+        {
+          "id": "room_1",
+          "name": "Living Room",
+          "type": "living_room",
+          "area": 30,
+          "floor": 1,
+          "position": { "x": 0, "y": 0, "width": 6, "height": 5 },
+          "features": ["large windows", "open plan"]
+        },
+        {
+          "id": "room_2",
+          "name": "Kitchen",
+          "type": "kitchen",
+          "area": 15,
+          "floor": 1,
+          "position": { "x": 6, "y": 0, "width": 3, "height": 5 },
+          "features": ["island", "pantry"]
+        },
+        {
+          "id": "room_3",
+          "name": "Master Bedroom",
+          "type": "bedroom",
+          "area": 20,
+          "floor": 1,
+          "position": { "x": 0, "y": 5, "width": 5, "height": 4 },
+          "features": ["en-suite", "walk-in closet"]
+        },
+        {
+          "id": "room_4",
+          "name": "Bathroom",
+          "type": "bathroom",
+          "area": 8,
+          "floor": 1,
+          "position": { "x": 5, "y": 5, "width": 2, "height": 4 },
+          "features": ["shower", "bathtub"]
+        },
+        {
+          "id": "room_5",
+          "name": "Bedroom 2",
+          "type": "bedroom",
+          "area": 15,
+          "floor": 1,
+          "position": { "x": 7, "y": 5, "width": 5, "height": 3 },
+          "features": ["built-in wardrobe"]
+        },
+        {
+          "id": "room_6",
+          "name": "Hallway",
+          "type": "hallway",
+          "area": 12,
+          "floor": 1,
+          "position": { "x": 9, "y": 0, "width": 3, "height": 4 },
+          "features": []
+        }
+      ]
+    }
+  ],
+  "zones": {
+    "living": { "name": "Living Zone", "rooms": ["room_1", "room_2"] },
+    "sleeping": { "name": "Sleeping Zone", "rooms": ["room_3", "room_5"] },
+    "service": { "name": "Service Zone", "rooms": ["room_4", "room_6"] }
+  },
+  "totalArea": 120,
+  "notes": "Open plan living area connects to kitchen. Bedrooms are grouped for privacy.",
+  "style": "modern",
+  "estimatedCost": {
+    "min": 120000,
+    "max": 180000,
+    "currency": "USD"
+  }
+}
