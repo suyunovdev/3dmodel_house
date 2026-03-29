@@ -34,8 +34,8 @@ export function PlanForm() {
 
   const handleSubmit = async () => {
     try {
-      await generatePlan(formData)
-      router.push('/result/new')
+      const projectId = await generatePlan(formData)
+      router.push(`/result/${projectId}`)
     } catch {
       toast.error('Xatolik yuz berdi. Qayta urinib ko\'ring.')
     }
