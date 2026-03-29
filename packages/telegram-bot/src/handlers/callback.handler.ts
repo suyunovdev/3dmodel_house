@@ -14,7 +14,7 @@ export async function callbackHandler(ctx: Context): Promise<void> {
 
   if (data.startsWith('style_')) {
     const style = data.replace('style_', '')
-    updateSession(userId, { style, step: 'extra' })
+    await updateSession(userId, { style, step: 'extra' })
     await ctx.reply(t('ask_extra'))
     return
   }

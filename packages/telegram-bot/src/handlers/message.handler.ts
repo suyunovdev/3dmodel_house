@@ -11,10 +11,10 @@ export async function messageHandler(ctx: Context): Promise<void> {
   if (!userId || !('text' in ctx.message!)) return
 
   const text = (ctx.message as { text: string }).text
-  const session = getSession(userId)
+  const session = await getSession(userId)
 
   if (text === '🏠 Yangi reja yaratish' || text === '/generate') {
-    updateSession(userId, { step: 'area' })
+    await updateSession(userId, { step: 'area' })
     await ctx.reply(t('ask_area'))
     return
   }
@@ -34,7 +34,7 @@ export async function messageHandler(ctx: Context): Promise<void> {
         await ctx.reply(t('invalid_area'))
         return
       }
-      updateSession(userId, { area, step: 'floors' })
+      await updateSession(userId, { area, step: 'floors' })
       await ctx.reply(t('ask_floors'))
       break
     }
@@ -45,7 +45,7 @@ export async function messageHandler(ctx: Context): Promise<void> {
         await ctx.reply(t('invalid_floors'))
         return
       }
-      updateSession(userId, { floors, step: 'bedrooms' })
+      await updateSession(userId, { floors, step: 'bedrooms' })
       await ctx.reply(t('ask_bedrooms'))
       break
     }
@@ -56,14 +56,14 @@ export async function messageHandler(ctx: Context): Promise<void> {
         await ctx.reply(t('invalid_bedrooms'))
         return
       }
-      updateSession(userId, { bedrooms, step: 'style' })
+      await updateSession(userId, { bedrooms, step: 'style' })
       await ctx.reply(t('ask_style'), styleKeyboard)
       break
     }
 
     case 'extra': {
       const extra = text === '/skip' ? undefined : text
-      updateSession(userId, { extra, step: 'done' })
+      await updateSession(userId, { extra, step: 'done' })
       await handleGenerate(ctx, userId)
       break
     }
@@ -71,7 +71,7 @@ export async function messageHandler(ctx: Context): Promise<void> {
 }
 
 async function handleGenerate(ctx: Context, userId: number): Promise<void> {
-  const session = getSession(userId)
+  const session = await getSession(userId)
   const loadingMsg = await ctx.reply(t('generating'))
 
   try {
@@ -105,9 +105,9 @@ async function handleGenerate(ctx: Context, userId: number): Promise<void> {
       }
     })
 
-    clearSession(userId)
+    await clearSession(userId)
   } catch {
     await ctx.reply(t('error'))
-    clearSession(userId)
+    await clearSession(userId)
   }
 }
