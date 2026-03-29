@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { clsx } from 'clsx'
-import { Home, Plus, LayoutDashboard } from 'lucide-react'
+import { Home, Plus, LayoutDashboard, LogOut, User, LogIn } from 'lucide-react'
+import { useAuthStore } from '@/store/authStore'
+import { useEffect } from 'react'
 
 const navItems = [
   { href: '/', label: 'Bosh sahifa', icon: Home },
@@ -13,6 +15,17 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname()
+  const router = useRouter()
+  const { isAuthenticated, user, logout, fetchMe } = useAuthStore()
+
+  useEffect(() => {
+    fetchMe()
+  }, [fetchMe])
+
+  const handleLogout = () => {
+    logout()
+    router.push('/')
+  }
 
   return (
     <header className="sticky top-0 z-40 bg-dark-950/80 backdrop-blur-xl border-b border-white/5">
@@ -42,9 +55,36 @@ export function Header() {
           ))}
         </nav>
 
-        <Link href="/generate" className="btn-primary text-sm py-2">
-          Bepul Boshlash
-        </Link>
+        <div className="flex items-center gap-3">
+          {isAuthenticated ? (
+            <>
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-xl">
+                <User size={14} className="text-primary-400" />
+                <span className="text-white/70 text-sm">{user?.name}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-all text-sm"
+              >
+                <LogOut size={16} />
+                <span className="hidden sm:block">Chiqish</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="flex items-center gap-2 px-4 py-2 text-white/60 hover:text-white text-sm transition-colors"
+              >
+                <LogIn size={16} />
+                Kirish
+              </Link>
+              <Link href="/register" className="btn-primary text-sm py-2">
+                Bepul Boshlash
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   )

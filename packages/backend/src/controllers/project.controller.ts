@@ -9,7 +9,7 @@ export class ProjectController {
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 10
-    const result = await this.projectService.findAll({ page, limit })
+    const result = await this.projectService.findAll({ page, limit }, req.userId)
     sendSuccess(res, result, 'Projects retrieved')
   })
 
@@ -23,12 +23,12 @@ export class ProjectController {
   })
 
   create = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const project = await this.projectService.create(req.body)
+    const project = await this.projectService.create({ ...req.body, userId: req.userId })
     sendSuccess(res, project, 'Project saved', 201)
   })
 
   delete = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    await this.projectService.delete(req.params.id)
+    await this.projectService.delete(req.params.id, req.userId)
     sendSuccess(res, null, 'Project deleted')
   })
 }

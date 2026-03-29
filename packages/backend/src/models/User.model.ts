@@ -3,7 +3,9 @@ import mongoose, { Schema, Document } from 'mongoose'
 export interface IUser extends Document {
   name: string
   email?: string
+  password?: string
   telegramId?: string
+  role: 'user' | 'admin'
   createdAt: Date
   updatedAt: Date
 }
@@ -23,10 +25,19 @@ const UserSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
     },
+    password: {
+      type: String,
+      select: false,
+    },
     telegramId: {
       type: String,
       unique: true,
       sparse: true,
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
     },
   },
   {
