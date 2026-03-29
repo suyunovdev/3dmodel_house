@@ -11,13 +11,14 @@
   },
   "dependencies": {
     "@ai-house-planner/shared": "workspace:*",
-    "telegraf": "^4.16.0",
     "axios": "^1.6.8",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.10.1",
+    "telegraf": "^4.16.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
-    "typescript": "^5.4.0",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.0"
   }
 }
