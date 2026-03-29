@@ -1,6 +1,5 @@
 'use client'
 
-import { clsx } from 'clsx'
 import { type ChangeEvent } from 'react'
 
 interface SliderProps {

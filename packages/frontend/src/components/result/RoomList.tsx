@@ -21,8 +21,6 @@ interface RoomListProps {
 
 export function RoomList({ plan }: RoomListProps) {
   const allRooms = plan.floors.flatMap(f => f.rooms)
-  const totalArea = allRooms.reduce((sum, r) => sum + r.area, 0)
-
   return (
     <Card>
       <div className="flex items-center justify-between mb-4">

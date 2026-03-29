@@ -56,7 +56,7 @@ export const usePlanStore = create<PlanState>((set, get) => ({
     }
   },
 
-  generateImage: async (prompt: string, projectId: string) => {
+  generateImage: async (prompt: string, _projectId: string) => {
     set({ isGeneratingImage: true })
     try {
       const res = await api.post('/generate-image', { prompt }) as any
