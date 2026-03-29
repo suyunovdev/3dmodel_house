@@ -11,24 +11,22 @@ import crypto from 'crypto'
 export class PlanService {
   async generatePlan(input: PlanInput): Promise<GeneratePlanResponse> {
     const cacheKey = `plan:${crypto.createHash('md5').update(JSON.stringify(input)).digest('hex')}`
-    const cached = cache.get<GeneratePlanResponse>(cacheKey)
+
+    const cached = await cache.get<GeneratePlanResponse>(cacheKey)
     if (cached) {
-      logger.info('Returning cached plan')
+      logger.info('Returning cached plan', { cacheKey })
       return cached
     }
 
     logger.info('Generating plan with AI', { area: input.area, style: input.style })
 
-    // Step 1: Generate the floor plan JSON
     const planPrompt = buildPlanPrompt(input)
     const planContent = await openAIClient.chat(planPrompt)
     const plan = parseJSONResponse(planContent)
 
-    // Step 2: Generate explanation
     const explanationPrompt = buildExplanationPrompt(input, plan)
     const explanation = await openAIClient.chat(explanationPrompt)
 
-    // Step 3: Build image prompt (we don't generate image here, that's separate endpoint)
     const imagePrompt = buildImagePrompt(input, plan.notes)
 
     const result: GeneratePlanResponse = {
@@ -37,8 +35,8 @@ export class PlanService {
       imagePrompt,
     }
 
-    // Cache for 1 hour
-    cache.set(cacheKey, result, 3600)
+    // 1 soat cache
+    await cache.set(cacheKey, result, 3600)
 
     return result
   }

@@ -2,8 +2,13 @@ import { app } from './app'
 import { connectDatabase } from './config/database'
 import { env } from './config/env'
 import { logger } from './utils/logger'
+import { cache } from './utils/cache'
 
 async function bootstrap() {
+  // Redis cache init (Redis yo'q bo'lsa in-memory ishlatadi)
+  await cache.init(env.redisUrl)
+
+  // MongoDB (yo'q bo'lsa warn qilib davom etadi)
   await connectDatabase()
 
   app.listen(env.port, () => {
