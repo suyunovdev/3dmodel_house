@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { ImageController } from '../controllers/image.controller'
 import { validateMiddleware } from '../middleware/validate.middleware'
-import { rateLimitMiddleware } from '../middleware/rateLimit.middleware'
+import { imageRateLimit } from '../middleware/rateLimit.middleware'
 import { generateImageSchema } from '@ai-house-planner/shared'
 
 const router = Router()
@@ -9,7 +9,7 @@ const controller = new ImageController()
 
 router.post(
   '/',
-  rateLimitMiddleware,
+  imageRateLimit,
   validateMiddleware(generateImageSchema),
   controller.generate
 )
