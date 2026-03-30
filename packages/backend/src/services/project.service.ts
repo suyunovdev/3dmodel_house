@@ -4,10 +4,18 @@ import { AppError } from '../middleware/error.middleware'
 import type { PaginationQuery } from '@ai-house-planner/shared'
 
 export class ProjectService {
-  async findAll(pagination: PaginationQuery, userId?: string) {
+  async findAll(pagination: PaginationQuery, userId?: string, search?: string, style?: string) {
     const { page = 1, limit = 10 } = pagination
     const skip = (page - 1) * limit
-    const filter = userId ? { userId } : {}
+
+    const filter: Record<string, unknown> = userId ? { userId } : {}
+    if (style) filter['inputData.style'] = { $regex: style, $options: 'i' }
+    if (search) {
+      filter['$or'] = [
+        { 'inputData.style': { $regex: search, $options: 'i' } },
+        { explanation: { $regex: search, $options: 'i' } },
+      ]
+    }
 
     const [items, total] = await Promise.all([
       ProjectModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),

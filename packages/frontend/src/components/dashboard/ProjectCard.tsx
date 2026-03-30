@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { Calendar, Home } from 'lucide-react'
+import { Calendar, Home, Trash2 } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { useProjectStore } from '@/store/projectStore'
+import toast from 'react-hot-toast'
 
 interface ProjectCardProps {
   project: {
@@ -20,6 +22,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const { deleteProject } = useProjectStore()
   const { inputData } = project
   const date = new Date(project.createdAt).toLocaleDateString('uz-UZ', {
     year: 'numeric',
@@ -27,9 +30,30 @@ export function ProjectCard({ project }: ProjectCardProps) {
     day: 'numeric',
   })
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!confirm('Bu loyihani o\'chirishni xohlaysizmi?')) return
+    try {
+      await deleteProject(project._id)
+      toast.success('Loyiha o\'chirildi')
+    } catch {
+      toast.error('O\'chirishda xatolik')
+    }
+  }
+
   return (
     <Link href={`/result/${project._id}`}>
-      <Card hover className="group">
+      <Card hover className="group relative">
+        {/* Delete button */}
+        <button
+          onClick={handleDelete}
+          className="absolute top-3 right-3 z-10 w-7 h-7 rounded-lg bg-red-500/0 hover:bg-red-500/20 text-white/0 group-hover:text-red-400 group-hover:bg-red-500/10 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+          title="O'chirish"
+        >
+          <Trash2 size={13} />
+        </button>
+
         {project.imageUrl ? (
           <div className="h-36 rounded-xl overflow-hidden mb-4 bg-white/5">
             <img

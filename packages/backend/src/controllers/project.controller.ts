@@ -9,7 +9,9 @@ export class ProjectController {
   getAll = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 10
-    const result = await this.projectService.findAll({ page, limit }, req.userId)
+    const search = req.query.search as string | undefined
+    const style = req.query.style as string | undefined
+    const result = await this.projectService.findAll({ page, limit }, req.userId, search, style)
     sendSuccess(res, result, 'Projects retrieved')
   })
 

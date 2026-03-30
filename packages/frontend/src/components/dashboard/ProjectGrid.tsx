@@ -1,4 +1,4 @@
-import { Home, Plus } from 'lucide-react'
+import { Home, Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 import { ProjectCard } from './ProjectCard'
 
@@ -16,10 +16,23 @@ interface Project {
 
 interface ProjectGridProps {
   projects: Project[]
+  hasFilters?: boolean
 }
 
-export function ProjectGrid({ projects }: ProjectGridProps) {
+export function ProjectGrid({ projects, hasFilters = false }: ProjectGridProps) {
   if (projects.length === 0) {
+    if (hasFilters) {
+      return (
+        <div className="text-center py-24">
+          <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Search size={36} className="text-white/20" />
+          </div>
+          <p className="text-white/50 text-lg mb-2">Natija topilmadi</p>
+          <p className="text-white/30 text-sm">Qidiruv shartlarini o&apos;zgartirib ko&apos;ring</p>
+        </div>
+      )
+    }
+
     return (
       <div className="text-center py-24">
         <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
