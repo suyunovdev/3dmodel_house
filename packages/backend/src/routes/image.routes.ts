@@ -14,4 +14,6 @@ router.post(
   controller.generate
 )
 
+router.get('/status/:jobId', controller.status)
+
 export { router as imageRoutes }

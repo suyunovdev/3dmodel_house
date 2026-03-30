@@ -20,6 +20,26 @@ interface PlanState {
   clearResult: () => void
 }
 
+async function pollJobStatus(jobId: string, onComplete: (imageUrl: string) => void): Promise<void> {
+  const MAX_ATTEMPTS = 60   // max 2 daqiqa
+  const INTERVAL_MS = 2000
+
+  for (let i = 0; i < MAX_ATTEMPTS; i++) {
+    await new Promise(r => setTimeout(r, INTERVAL_MS))
+    try {
+      const res = await api.get(`/generate-image/status/${jobId}`) as any
+      const { status, result } = res.data
+      if (status === 'completed' && result?.imageUrl) {
+        onComplete(result.imageUrl)
+        return
+      }
+      if (status === 'failed') return
+    } catch {
+      // polling xatosi — davom etamiz
+    }
+  }
+}
+
 export const usePlanStore = create<PlanState>((set, get) => ({
   currentResult: null,
   isLoading: false,
@@ -29,11 +49,9 @@ export const usePlanStore = create<PlanState>((set, get) => ({
   generatePlan: async (input: PlanInput): Promise<string> => {
     set({ isLoading: true, error: null })
     try {
-      // 1. AI dan plan va explanation olamiz
       const res = await api.post('/generate-plan', input) as any
       const { plan, explanation, imagePrompt } = res.data
 
-      // 2. DB ga saqlaymiz va projectId olamiz
       const saveRes = await api.post('/projects', {
         inputData: input,
         resultJson: plan,
@@ -46,7 +64,7 @@ export const usePlanStore = create<PlanState>((set, get) => ({
         isLoading: false,
       })
 
-      // 3. Rasm background da generatsiya (non-blocking)
+      // Non-blocking image generation
       get().generateImage(imagePrompt, projectId)
 
       return projectId
@@ -56,28 +74,30 @@ export const usePlanStore = create<PlanState>((set, get) => ({
     }
   },
 
-  generateImage: async (prompt: string, _projectId: string) => {
+  generateImage: async (prompt: string, projectId: string) => {
     set({ isGeneratingImage: true })
     try {
-      const res = await api.post('/generate-image', { prompt }) as any
-      const imageUrl: string = res.data.imageUrl
+      const res = await api.post('/generate-image', { prompt, projectId }) as any
+      const { status, imageUrl, jobId } = res.data
 
-      // Store ni yangilaymiz
-      const currentResult = get().currentResult
-      if (currentResult) {
-        set({
-          currentResult: { ...currentResult, imageUrl },
-          isGeneratingImage: false,
+      if (status === 'completed' && imageUrl) {
+        // Sync mode (Redis yo'q)
+        const currentResult = get().currentResult
+        if (currentResult) {
+          set({ currentResult: { ...currentResult, imageUrl }, isGeneratingImage: false })
+        }
+      } else if (status === 'queued' && jobId) {
+        // Async mode — poll qilish
+        await pollJobStatus(jobId, (url) => {
+          const currentResult = get().currentResult
+          if (currentResult) {
+            set({ currentResult: { ...currentResult, imageUrl: url }, isGeneratingImage: false })
+          }
         })
+        set({ isGeneratingImage: false })
+      } else {
+        set({ isGeneratingImage: false })
       }
-
-      // DB dagi loyihani ham yangilaymiz
-      await api.post('/projects', {
-        inputData: currentResult?.plan,
-        resultJson: currentResult?.plan,
-        explanation: currentResult?.explanation,
-        imageUrl,
-      }).catch(() => null)
     } catch {
       set({ isGeneratingImage: false })
     }
