@@ -3,10 +3,14 @@ import { connectDatabase } from './config/database'
 import { env } from './config/env'
 import { logger } from './utils/logger'
 import { cache } from './utils/cache'
+import { initCloudinary } from './utils/cloudinary'
 
 async function bootstrap() {
   // Redis cache init (Redis yo'q bo'lsa in-memory ishlatadi)
   await cache.init(env.redisUrl)
+
+  // Cloudinary init (yo'q bo'lsa OpenAI URL dan foydalaniladi)
+  initCloudinary()
 
   // MongoDB (yo'q bo'lsa warn qilib davom etadi)
   await connectDatabase()

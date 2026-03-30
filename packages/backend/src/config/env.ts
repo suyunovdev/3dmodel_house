@@ -14,6 +14,9 @@ const envSchema = z.object({
   REDIS_URL: z.string().optional(),
   RATE_LIMIT_WINDOW_MS: z.string().default('900000'),
   RATE_LIMIT_MAX: z.string().default('100'),
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
 })
 
 const parsed = envSchema.safeParse(process.env)
@@ -35,6 +38,11 @@ export const env = {
   },
   jwtSecret: parsed.data.JWT_SECRET,
   redisUrl: parsed.data.REDIS_URL,
+  cloudinary: {
+    cloudName: parsed.data.CLOUDINARY_CLOUD_NAME,
+    apiKey: parsed.data.CLOUDINARY_API_KEY,
+    apiSecret: parsed.data.CLOUDINARY_API_SECRET,
+  },
   rateLimit: {
     windowMs: parseInt(parsed.data.RATE_LIMIT_WINDOW_MS),
     max: parseInt(parsed.data.RATE_LIMIT_MAX),
